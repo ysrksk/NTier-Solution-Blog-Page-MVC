@@ -7,6 +7,6 @@ public interface IBlogService
     void AddBlog(Blog blog);
     void UpdateBlog(Blog blog);
     void DeleteBlog(Blog blog);
-    About GetBlogById(int id);
-    List<About> GetAllBlog();
+    Blog GetBlogById(int id);
+    List<Blog> GetAllBlog();
 }
