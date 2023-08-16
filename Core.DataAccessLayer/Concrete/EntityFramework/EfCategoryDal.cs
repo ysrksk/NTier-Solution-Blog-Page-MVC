@@ -5,4 +5,5 @@ namespace Core.DataAccessLayer.Concrete.EntityFramework;
 
 public class EfCategoryDal : EfEntityRepositoryBase<Category, BlogContext>, ICategoryDal
 {
+
 }

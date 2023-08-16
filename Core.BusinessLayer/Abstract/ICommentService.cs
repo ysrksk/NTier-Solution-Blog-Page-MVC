@@ -9,4 +9,5 @@ public interface ICommentService
     void DeleteComment(Comment comment);
     Comment GetCommentById(int id);
     List<Comment> GetAllComment();
+    List<Comment> GetAll(int id);
 }

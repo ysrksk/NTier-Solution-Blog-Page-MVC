@@ -4,11 +4,11 @@ using Core.Entity.Concrete;
 
 namespace Core.BusinessLayer.Concrete;
 
-public class commentManager : ICommentService
+public class CommentManager : ICommentService
 {
 
     ICommentDal _commentDal;
-    public commentManager(ICommentDal commentDal)
+    public CommentManager(ICommentDal commentDal)
     {
         _commentDal = commentDal;
     }
@@ -29,13 +29,18 @@ public class commentManager : ICommentService
         return comment;
     }
 
-    public List<Comment> GetAllComment()
+    public List<Comment> GetAll(int id)
     {
-        return _commentDal.GetAll();
+        return _commentDal.GetAll(x => x.BlogId == id);
     }
 
     public void UpdateComment(Comment comment)
     {
         _commentDal.Update(comment);
+    }
+
+    public List<Comment> GetAllComment()
+    {
+        return _commentDal.GetAll();
     }
 }
