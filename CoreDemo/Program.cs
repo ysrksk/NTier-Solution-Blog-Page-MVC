@@ -2,6 +2,8 @@ using Core.BusinessLayer.Abstract;
 using Core.BusinessLayer.Concrete;
 using Core.DataAccessLayer.Abstract;
 using Core.DataAccessLayer.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,17 @@ builder.Services.AddScoped<IBlogDal, EfBlogDal>();
 builder.Services.AddScoped<IBlogService, BlogManager>();
 builder.Services.AddScoped<IWriterDal, EfWriterDal>();
 builder.Services.AddScoped<IWriterService, WriterManager>();
+builder.Services.AddScoped<INewsLetterDal, EfNewsLetterDal>();
+builder.Services.AddScoped<INewsLetterService, NewsLetterManager>();
+
+//Program düzeyinde Authotication saðlýyor.Ýzin için conrollera Allowanonumius vermek gerekir.
+builder.Services.AddMvc(config =>
+{
+	var policy = new AuthorizationPolicyBuilder()
+	.RequireAuthenticatedUser()
+	.Build();
+	config.Filters.Add(new AuthorizeFilter(policy));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +35,8 @@ if (!app.Environment.IsDevelopment())
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

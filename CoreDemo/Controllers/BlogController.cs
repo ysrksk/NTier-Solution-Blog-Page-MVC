@@ -1,5 +1,4 @@
 ﻿using Core.BusinessLayer.Abstract;
-using Core.DataAccessLayer.Concrete.EntityFramework;
 using Core.Entity.Concrete;
 using CoreDemo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +9,13 @@ namespace CoreDemo.Controllers
     {
         private readonly IBlogService _blogService;
         private readonly ICommentService _commentService;
-        EfAboutDal aboutDal = new EfAboutDal();
+        private readonly INewsLetterService _newsletterService;
 
-        public BlogController(IBlogService blogService, ICommentService commentService)
+        public BlogController(IBlogService blogService, ICommentService commentService, INewsLetterService newsletterService)
         {
             _blogService = blogService;
             _commentService = commentService;
+            _newsletterService = newsletterService;
         }
 
         public IActionResult Index()
@@ -29,28 +29,34 @@ namespace CoreDemo.Controllers
         {
             var result = _blogService.GetBlogById(blogId);
             var comments = _commentService.GetAll(blogId);
-
-
+            var writerBlogs = _blogService.GetListWithWriter(result.WriterID);
 
             BlogViewModel vm = new BlogViewModel()
             {
                 Blog = new Blog(),
+                Blogs = new List<Blog>(),
                 Comments = new List<Comment>(),
+                NewsLetter = new NewsLetter(),
             };
 
             if (result != null)
                 vm.Blog = result;
 
             if (comments != null)
-            {
-                foreach (var item in comments)
-                {
-                    vm.Comments.Add(item);
-                }
-            }
+                vm.Blogs = writerBlogs;
 
+            if (comments != null)
+                vm.Comments = comments;
 
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult SubscribeMail(NewsLetter newsLetter)
+        {
+            newsLetter.MailStatus = true;
+            _newsletterService.Add(newsLetter);
+            return RedirectToAction("Blogs", "Blog");
         }
     }
 }
