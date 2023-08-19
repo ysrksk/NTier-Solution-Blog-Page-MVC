@@ -18,29 +18,31 @@ builder.Services.AddScoped<IWriterDal, EfWriterDal>();
 builder.Services.AddScoped<IWriterService, WriterManager>();
 builder.Services.AddScoped<INewsLetterDal, EfNewsLetterDal>();
 builder.Services.AddScoped<INewsLetterService, NewsLetterManager>();
+builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
 builder.Services.AddAuthentication(
-	CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie(x =>
-	{
-		x.LoginPath = "/Login/Index";
-	});
+    CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(x =>
+    {
+        x.LoginPath = "/Login/Index";
+    });
 
 //Program düzeyinde Authotication saðlýyor.Ýzin için conrollera Allowanonumius vermek gerekir.
 builder.Services.AddMvc(config =>
 {
-	var policy = new AuthorizationPolicyBuilder()
-	.RequireAuthenticatedUser()
-	.Build();
-	config.Filters.Add(new AuthorizeFilter(policy));
+    var policy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+    config.Filters.Add(new AuthorizeFilter(policy));
 });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
@@ -54,7 +56,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
