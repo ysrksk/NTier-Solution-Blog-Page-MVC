@@ -2,6 +2,7 @@ using Core.BusinessLayer.Abstract;
 using Core.BusinessLayer.Concrete;
 using Core.DataAccessLayer.Abstract;
 using Core.DataAccessLayer.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -17,6 +18,12 @@ builder.Services.AddScoped<IWriterDal, EfWriterDal>();
 builder.Services.AddScoped<IWriterService, WriterManager>();
 builder.Services.AddScoped<INewsLetterDal, EfNewsLetterDal>();
 builder.Services.AddScoped<INewsLetterService, NewsLetterManager>();
+builder.Services.AddAuthentication(
+	CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(x =>
+	{
+		x.LoginPath = "/Login/Index";
+	});
 
 //Program düzeyinde Authotication saðlýyor.Ýzin için conrollera Allowanonumius vermek gerekir.
 builder.Services.AddMvc(config =>
@@ -40,6 +47,7 @@ app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseRouting();
 

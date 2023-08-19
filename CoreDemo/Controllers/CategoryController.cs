@@ -10,7 +10,7 @@ namespace CoreDemo.Controllers
         public IActionResult Index()
         {
 
-            var values = cm.GetAllCategory();
+            var values = cm.GetAll();
             return View(values);
         }
     }

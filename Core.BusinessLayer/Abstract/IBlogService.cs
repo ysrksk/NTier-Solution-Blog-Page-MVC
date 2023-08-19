@@ -11,4 +11,5 @@ public interface IBlogService
 	List<Blog> GetAll();
 	List<Blog> GetListWithCategory();
 	List<Blog> GetListWithWriter(int id);
+	List<Blog> GetListLastThreePost();
 }

@@ -1,6 +1,7 @@
 ﻿using Core.BusinessLayer.Abstract;
 using Core.DataAccessLayer.Abstract;
 using Core.Entity.Concrete;
+using System.Linq.Expressions;
 
 namespace Core.BusinessLayer.Concrete;
 
@@ -23,15 +24,16 @@ public class WriterManager : IWriterService
 		_writerDal.Delete(writer);
 	}
 
-	public Writer GetWriterById(int id)
+	public Writer GetWriterById(Expression<Func<Writer, bool>> filter)
 	{
-		var writer = _writerDal.Get(x => x.WriterID == id);
+		var writer = _writerDal.Get(filter);
 		return writer;
 	}
 
-	public List<Writer> GetAllWriter()
+	public List<Writer> GetAllWriter(Expression<Func<Writer, bool>> filter = null)
 	{
-		return _writerDal.GetAll();
+		return filter == null ? _writerDal.GetAll() : _writerDal.GetAll(filter);
+
 	}
 
 	public void UpdateWriter(Writer writer)

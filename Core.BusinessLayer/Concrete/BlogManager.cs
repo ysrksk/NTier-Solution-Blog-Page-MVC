@@ -48,4 +48,9 @@ public class BlogManager : IBlogService
 	{
 		return _blogDal.GetListWithWriter(x => x.WriterID == id);
 	}
+
+	public List<Blog> GetListLastThreePost()
+	{
+		return _blogDal.GetAll().Take(3).ToList();
+	}
 }

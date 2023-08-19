@@ -13,28 +13,28 @@ public class CategoryManager : ICategoryService
         _categoryDal = categoryDal;
     }
 
-    public void AddCategory(Category category)
+    public void Add(Category category)
     {
         _categoryDal.Add(category);
     }
 
-    public void DeleteCategory(Category category)
+    public void Delete(Category category)
     {
         _categoryDal.Delete(category);
     }
 
-    public Category GetCategoryById(int id)
+    public Category GetById(int id)
     {
         var Category = _categoryDal.Get(x => x.CategoryId == id);
         return Category;
     }
 
-    public List<Category> GetAllCategory()
+    public List<Category> GetAll()
     {
         return _categoryDal.GetAll();
     }
 
-    public void UpdateCategory(Category category)
+    public void Update(Category category)
     {
         _categoryDal.Update(category);
     }
