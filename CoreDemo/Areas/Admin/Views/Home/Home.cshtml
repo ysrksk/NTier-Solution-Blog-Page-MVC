@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Yazar Ajax İşlemleri</h1>
+
+<br />
+<button type="button" id="btnGetList" class="btn btn-outline-primary"> Yazar Listesi </button>
+<button type="button" id="btnAdd" class="btn btn-outline-primary"> Yazar Ekle </button>
+<br />
+<div id="writerList">
+    Buraya Yazarlar Gelecek
+</div>
+<br />
+<br />
+<div>
+    <input type="text" class="form-control" id="txtWriterId" placeholder="Yazar ID"/>
+    <input type="text" class="form-control" id="txtWriterName" placeholder="Yazar Adı"/>
+</div>
+
+@section scripts{
+    <script>
+        $("#btnGetList").click(function () {
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Home/WriterList",
+                success: function (func) {
+                    console.log(func);
+                }
+            })
+        })
+
+        $("#btnAdd").click(function () {
+            debugger;
+            let writer = {
+                WriterId: $("#txtWriterId").val(),
+                WriterName: $("#txtWriterName").val(),
+            }
+
+            $.ajax({
+                dataType: "json",
+                type: "Post",
+                url: "/Admin/Home/Add",
+                data: writer,
+                success: function (func) {
+                    console.log(func);
+                }
+            })
+        })
+    </script>
+}

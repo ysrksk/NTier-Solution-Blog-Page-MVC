@@ -5,16 +5,17 @@ namespace CoreDemo.ViewComponents.Writer
 {
     public class WriterNotification : ViewComponent
     {
-        IWriterService _writerService;
+        INotificationService _notificationService;
 
-        public WriterNotification(IWriterService writerService)
+        public WriterNotification(INotificationService notificationService)
         {
-            _writerService = writerService;
+            _notificationService = notificationService;
         }
 
         public IViewComponentResult Invoke()
         {
-            return View();
+            var results = _notificationService.GetAll();
+            return View(results);
         }
     }
 }
